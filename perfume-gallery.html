@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfume Gallery - Image Reference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .stats {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .stats span {
+            display: inline-block;
+            margin: 0 20px;
+            padding: 10px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            font-weight: 600;
+        }
+
+        .stats .men { color: #3498db; }
+        .stats .women { color: #e74c3c; }
+        .stats .unisex { color: #9b59b6; }
+
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            text-align: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #f39c12, #e74c3c);
+        }
+
+        .card.men::before {
+            background: linear-gradient(90deg, #3498db, #2980b9);
+        }
+
+        .card.women::before {
+            background: linear-gradient(90deg, #e74c3c, #c0392b);
+        }
+
+        .card.unisex::before {
+            background: linear-gradient(90deg, #9b59b6, #8e44ad);
+        }
+
+        .card img {
+            width: 100%;
+            height: 280px;
+            object-fit: contain;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            background: #f8f9fa;
+            padding: 10px;
+        }
+
+        .card h3 {
+            margin: 10px 0 5px;
+            font-size: 1.2em;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+
+        .card .brand {
+            font-size: 0.95em;
+            color: #7f8c8d;
+            margin-bottom: 8px;
+        }
+
+        .card .gender-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .card.men .gender-badge {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .card.women .gender-badge {
+            background: #fce4ec;
+            color: #c2185b;
+        }
+
+        .card.unisex .gender-badge {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .card .price {
+            margin-top: 10px;
+            font-size: 1.1em;
+            font-weight: 700;
+            color: #27ae60;
+        }
+
+        .instructions {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-top: 40px;
+        }
+
+        .instructions h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+            color: #555;
+        }
+
+        .instructions li {
+            margin-bottom: 10px;
+        }
+
+        .instructions code {
+            background: #f8f9fa;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #e74c3c;
+        }
+
+        .filter-buttons {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            margin: 0 8px;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-btn.active {
+            background: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+
+        .filter-btn.men:hover, .filter-btn.men.active {
+            background: #3498db;
+            border-color: #3498db;
+            color: white;
+        }
+
+        .filter-btn.women:hover, .filter-btn.women.active {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: white;
+        }
+
+        .filter-btn.unisex:hover, .filter-btn.unisex.active {
+            background: #9b59b6;
+            border-color: #9b59b6;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🌸 Perfume Collection Gallery</h1>
+        <p class="subtitle">Complete image reference for all 28 fragrances</p>
+
+        <div class="stats">
+            <span class="men">👔 10 Men's</span>
+            <span class="women">💄 6 Women's</span>
+            <span class="unisex">✨ 12 Unisex</span>
+        </div>
+
+        <div class="filter-buttons">
+            <button class="filter-btn active" onclick="filterPerfumes('all')">All (28)</button>
+            <button class="filter-btn men" onclick="filterPerfumes('men')">Men's (10)</button>
+            <button class="filter-btn women" onclick="filterPerfumes('women')">Women's (6)</button>
+            <button class="filter-btn unisex" onclick="filterPerfumes('unisex')">Unisex (12)</button>
+        </div>
+
+        <div class="gallery" id="perfumeGallery"></div>
+
+        <div class="instructions">
+            <h2>📝 How to Add Real Perfume Images</h2>
+            <ol>
+                <li>Download official product images for each perfume from the brand's website or high-quality sources</li>
+                <li>Save images to: <code>public/perfume-images/</code></li>
+                <li>Use these exact filenames:
+                    <ul style="margin-top: 10px; margin-left: 20px;">
+                        <li><code>creed-aventus.jpg</code></li>
+                        <li><code>by-kilian-angels-share.jpg</code></li>
+                        <li><code>chanel-bleu-de-chanel.jpg</code></li>
+                        <li><code>dior-sauvage.jpg</code></li>
+                        <li><code>pdm-althair.jpg</code></li>
+                        <li><code>ysl-y.jpg</code></li>
+                        <li><code>ysl-caban.jpg</code></li>
+                        <li><code>ysl-babycat.jpg</code></li>
+                        <li><code>creed-blue-talisman.jpg</code></li>
+                        <li><code>lv-imagination.jpg</code></li>
+                        <li><code>lv-pacific-chill.jpg</code></li>
+                        <li><code>prada-lhomme.jpg</code></li>
+                        <li><code>xerjoff-naxos.jpg</code></li>
+                        <li><code>giardini-bianco-latte.jpg</code></li>
+                        <li><code>giardini-vanilla-powder.jpg</code></li>
+                        <li><code>chanel-coco-mademoiselle.jpg</code></li>
+                        <li><code>dior-jadore.jpg</code></li>
+                        <li><code>ysl-black-opium.jpg</code></li>
+                        <li><code>lancome-la-vie-est-belle.jpg</code></li>
+                        <li><code>viktor-rolf-flowerbomb.jpg</code></li>
+                        <li><code>amouage-outlands.jpg</code></li>
+                        <li><code>amouage-purpose-50.jpg</code></li>
+                        <li><code>byredo-animalique.jpg</code></li>
+                        <li><code>clive-christian-blonde-amber.jpg</code></li>
+                        <li><code>creed-silver-mountain-water.jpg</code></li>
+                        <li><code>initio-side-effect.jpg</code></li>
+                        <li><code>lv-ombre-nomade.jpg</code></li>
+                        <li><code>lv-stellar-times.jpg</code></li>
+                    </ul>
+                </li>
+                <li>Images are already in JPG format - no conversion needed</li>
+                <li>Recommended image size: 800x800px or higher</li>
+                <li>Format: JPG or PNG with transparent background</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const perfumes = [
+            { name: "Aventus", brand: "Creed", image: "/perfume-images/creed-aventus.jpg", gender: "men", price: "$425" },
+            { name: "Blue Talisman", brand: "Creed", image: "/perfume-images/creed-blue-talisman.jpg", gender: "men", price: "$325" },
+            { name: "Silver Mountain Water", brand: "Creed", image: "/perfume-images/creed-silver-mountain-water.jpg", gender: "unisex", price: "$375" },
+            { name: "Angel's Share", brand: "By Kilian", image: "/perfume-images/by-kilian-angels-share.jpg", gender: "unisex", price: "$325" },
+            { name: "Side Effect", brand: "Initio", image: "/perfume-images/initio-side-effect.jpg", gender: "unisex", price: "$285" },
+            { name: "Bleu de Chanel", brand: "Chanel", image: "/perfume-images/chanel-bleu-de-chanel.jpg", gender: "men", price: "$155" },
+            { name: "Coco Mademoiselle", brand: "Chanel", image: "/perfume-images/chanel-coco-mademoiselle.jpg", gender: "women", price: "$155" },
+            { name: "Outlands", brand: "Amouage", image: "/perfume-images/amouage-outlands.jpg", gender: "unisex", price: "$425" },
+            { name: "Animalique", brand: "Byredo", image: "/perfume-images/byredo-animalique.jpg", gender: "unisex", price: "$485" },
+            { name: "Blonde Amber", brand: "Clive Christian", image: "/perfume-images/clive-christian-blonde-amber.jpg", gender: "unisex", price: "$525" },
+            { name: "Sauvage", brand: "Dior", image: "/perfume-images/dior-sauvage.jpg", gender: "men", price: "$125" },
+            { name: "J'adore", brand: "Dior", image: "/perfume-images/dior-jadore.jpg", gender: "women", price: "$135" },
+            { name: "Purpose 50", brand: "Amouage", image: "/perfume-images/amouage-purpose-50.jpg", gender: "women", price: "$395" },
+            { name: "Bianco Latte", brand: "Giardini di Toscana", image: "/perfume-images/giardini-bianco-latte.jpg", gender: "unisex", price: "$165" },
+            { name: "Vanilla Powder", brand: "Giardini di Toscana", image: "/perfume-images/giardini-vanilla-powder.jpg", gender: "unisex", price: "$165" },
+            { name: "La Vie Est Belle", brand: "Lancôme", image: "/perfume-images/lancome-la-vie-est-belle.jpg", gender: "women", price: "$135" },
+            { name: "Imagination", brand: "Louis Vuitton", image: "/perfume-images/lv-imagination.jpg", gender: "men", price: "$285" },
+            { name: "Ombre Nomade", brand: "Louis Vuitton", image: "/perfume-images/lv-ombre-nomade.jpg", gender: "unisex", price: "$480" },
+            { name: "Pacific Chill", brand: "Louis Vuitton", image: "/perfume-images/lv-pacific-chill.jpg", gender: "unisex", price: "$285" },
+            { name: "Stellar Times", brand: "Louis Vuitton", image: "/perfume-images/lv-stellar-times.jpg", gender: "unisex", price: "$620" },
+            { name: "Althair", brand: "Parfums de Marly", image: "/perfume-images/pdm-althair.jpg", gender: "men", price: "$225" },
+            { name: "L'Homme", brand: "Prada", image: "/perfume-images/prada-lhomme.jpg", gender: "men", price: "$95" },
+            { name: "Flowerbomb", brand: "Viktor & Rolf", image: "/perfume-images/viktor-rolf-flowerbomb.jpg", gender: "women", price: "$155" },
+            { name: "Naxos", brand: "Xerjoff", image: "/perfume-images/xerjoff-naxos.jpg", gender: "unisex", price: "$225" },
+            { name: "Babycat", brand: "YSL", image: "/perfume-images/ysl-babycat.jpg", gender: "unisex", price: "$145" },
+            { name: "Black Opium", brand: "YSL", image: "/perfume-images/ysl-black-opium.jpg", gender: "women", price: "$125" },
+            { name: "Caban", brand: "YSL", image: "/perfume-images/ysl-caban.jpg", gender: "men", price: "$165" },
+            { name: "Y", brand: "YSL", image: "/perfume-images/ysl-y.jpg", gender: "men", price: "$115" }
+        ];
+
+        let currentFilter = 'all';
+
+        function renderGallery(filter = 'all') {
+            const gallery = document.getElementById("perfumeGallery");
+            gallery.innerHTML = '';
+            
+            const filtered = filter === 'all' 
+                ? perfumes 
+                : perfumes.filter(p => p.gender === filter);
+
+            filtered.forEach(p => {
+                const card = document.createElement("div");
+                card.className = `card ${p.gender}`;
+                card.innerHTML = `
+                    <img src="${p.image}" alt="${p.name}" onerror="this.src='/perfume-images/placeholder.svg'">
+                    <h3>${p.name}</h3>
+                    <p class="brand">${p.brand}</p>
+                    <span class="gender-badge">${p.gender}</span>
+                    <p class="price">${p.price}</p>
+                `;
+                gallery.appendChild(card);
+            });
+        }
+
+        function filterPerfumes(filter) {
+            currentFilter = filter;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            renderGallery(filter);
+        }
+
+        // Initial render
+        renderGallery();
+    </script>
+</body>
+</html>
